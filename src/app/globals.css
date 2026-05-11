@@ -1,26 +1,108 @@
 @import "tailwindcss";
+@font-face {
+  font-family: 'Roobert';
+  src: url('../fonts/Roobert-Light.otf')
+    format('opentype');
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+  font-weight: 600;
+  font-style: normal;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes rhombusSlow {
+  from {
+    transform: rotate(4deg);
+  }
+  to {
+    transform: rotate(364deg);
+  }
+}
+
+@keyframes rhombusMedium {
+  from {
+    transform: rotate(-3deg);
+  }
+  to {
+    transform: rotate(357deg);
+  }
+}
+
+@keyframes rhombusFast {
+  from {
+    transform: rotate(2deg);
+  }
+  to {
+    transform: rotate(362deg);
+  }
+}
+
+.animate-rhombusSlow {
+  animation: rhombusSlow 90s linear infinite;
+}
+
+.animate-rhombusMedium {
+  animation: rhombusMedium 65s linear infinite;
+}
+
+.animate-rhombusFast {
+  animation: rhombusFast 45s linear infinite;
+}
+
+@keyframes spinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spinSlow 12s linear infinite;
+}
+
+@keyframes spinReverse {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.animate-spin-reverse {
+  animation: spinReverse 16s linear infinite;
+}
+
+@keyframes scan {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(100vh);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-scan {
+  animation: scan 4s ease-in-out infinite;
 }
