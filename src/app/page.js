@@ -1,88 +1,88 @@
 'use client'
 
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence } from 'framer-motion'
 import { useEffect, useState } from 'react'
+
 import IntroScreen from '@/components/phase1/IntroScreen'
 import NameScreen from '@/components/phase1/NameScreen'
 import LocationScreen from '@/components/phase1/LocationScreen'
+import ConfirmationScreen from '@/components/phase1/ConfirmationScreen'
+import LoadingScreen from '@/components/phase2/LoadingScreen'
+
 import PermissionScreen from '@/components/phase2/PermissionScreen'
 import CameraSetupScreen from '@/components/phase2/CameraSetupScreen'
 import CameraScreen from '@/components/phase2/CameraScreen'
+
 import AnalysisProcessingScreen from '@/components/phase3/AnalysisProcessingScreen'
 import SkinProfileScreen from '@/components/phase3/SkinProfileScreen'
-import ConfirmationScreen from '@/components/phase1/ConfirmationScreen'
-
-const screenVariants = {
-  initial: {
-    opacity: 0,
-    y: 30,
-    filter: 'blur(4px)',
-  },
-
-  animate: {
-    opacity: 1,
-    y: 0,
-    filter: 'blur(0px)',
-  },
-
-  exit: {
-    opacity: 0,
-    y: -20,
-    filter: 'blur(4px)',
-  },
-}
+import SummaryScreen from '@/components/phase3/SummaryScreen'
 
 export default function Home() {
+
   const [screen, setScreen] = useState('intro')
 
   const [loading, setLoading] = useState(false)
 
   const [error, setError] = useState('')
 
-  const [name, setName] = useState(() => {
-      if (
-        typeof window !== 'undefined'
-      ) {
-        return (
-          localStorage.getItem('name') ||
-          ''
-        )
-      }
+  const [analysisData, setAnalysisData] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const savedAnalysisData = localStorage.getItem('analysisData')
 
-      return ''
-    })
+      if (savedAnalysisData) {
+        return JSON.parse(savedAnalysisData)
+      }
+    }
+
+    return null
+  })
+
+
+  const [name, setName] = useState(() => {
+
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('name') || ''
+    }
+
+    return ''
+
+  })
 
   const [location, setLocation] = useState(() => {
-      if (
-        typeof window !== 'undefined'
-      ) {
-        return (
-          localStorage.getItem(
-            'location'
-          ) || ''
-        )
-      }
 
-      return ''
-    })
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('location') || ''
+    }
+
+    return ''
+
+  })
 
   useEffect(() => {
-    localStorage.setItem(
-      'name',
-      name
-    )
+
+    localStorage.setItem('name', name)
+
   }, [name])
 
   useEffect(() => {
-    localStorage.setItem(
-      'location',
-      location
-    )
+
+    localStorage.setItem('location', location)
+
   }, [location])
 
+  useEffect(() => {
+    if (analysisData) {
+      localStorage.setItem('analysisData', JSON.stringify(analysisData))
+    }
+  }, [analysisData])
+
+
   const submitData = async () => {
+
     try {
+
       setLoading(true)
+
       setError('')
 
       const response = await fetch(
@@ -91,8 +91,7 @@ export default function Home() {
           method: 'POST',
 
           headers: {
-            'Content-Type':
-              'application/json',
+            'Content-Type': 'application/json',
           },
 
           body: JSON.stringify({
@@ -103,45 +102,39 @@ export default function Home() {
       )
 
       if (!response.ok) {
-        throw new Error(
-          'Something went wrong'
-        )
+        throw new Error('Something went wrong')
       }
 
       const data = await response.json()
 
       console.log(data)
 
-      setScreen('confirmation')
-
-     
+      setScreen('loading')
 
     } catch (err) {
+
       console.error(err)
 
-      setError(
-        'Failed to submit data.'
-      )
+      setError('Failed to submit data.')
 
     } finally {
+
       setLoading(false)
+
     }
   }
 
   return (
-    <main className="relative h-screen overflow-hidden bg-[#FAF9F6]">
+
+    <main className="relative h-screen overflow-hidden bg-[#FDFDFB]">
 
       <AnimatePresence mode="wait">
 
-        <div
-          className="absolute inset-0"
-        >
+        <div className="absolute inset-0">
 
           {screen === 'intro' && (
             <IntroScreen
-              onNext={() =>
-                setScreen('name')
-              }
+              onNext={() => setScreen('name')}
             />
           )}
 
@@ -149,12 +142,8 @@ export default function Home() {
             <NameScreen
               name={name}
               setName={setName}
-              onNext={() =>
-                setScreen('location')
-              }
-              onBack={() =>
-                setScreen('intro')
-              }
+              onNext={() => setScreen('location')}
+              onBack={() => setScreen('intro')}
             />
           )}
 
@@ -163,41 +152,42 @@ export default function Home() {
               location={location}
               setLocation={setLocation}
               onNext={submitData}
-              onBack={() =>
-                setScreen('name')
-              }
+              onBack={() => setScreen('name')}
               loading={loading}
               error={error}
             />
           )}
 
-           {screen === 'confirmation' && (
+          {screen === 'loading' && (
+            <LoadingScreen
+              onBack={() => setScreen('location')}
+              onNext={() => setScreen('confirmation')}
+            />
+          )}
+
+          {screen === 'confirmation' && (
             <ConfirmationScreen
               name={name}
-              onNext={() =>
-                setScreen('permission')
-              }
-              onBack={() =>
-                setScreen('location')
-              }
+              onNext={() => setScreen('permission')}
+              onBack={() => setScreen('location')}
             />
           )}
 
           {screen === 'permission' && (
-              <PermissionScreen
-                onAllow={() => {
-                  setScreen('camera-setup')
+            <PermissionScreen
+              onAllow={() => {
 
-                  setTimeout(() => {
-                    setScreen('camera')
-                  }, 3000)
-                }}
+                setScreen('camera-setup')
 
-                onBack={() =>
-                  setScreen('confirmation')
-                }
-              />
-            )}
+                setTimeout(() => {
+                  setScreen('camera')
+                }, 3000)
+
+              }}
+
+              onBack={() => setScreen('confirmation')}
+            />
+          )}
 
           {screen === 'camera-setup' && (
             <CameraSetupScreen />
@@ -205,24 +195,38 @@ export default function Home() {
 
           {screen === 'camera' && (
             <CameraScreen
-              onCapture={() => {
-                setScreen(
-                  'analysis-processing'
-                )
+
+              onBack={() => {
+                setScreen('permission')
+              }}
+
+              onCapture={(data) => {
+                setAnalysisData(data)
+                localStorage.setItem('analysisData', JSON.stringify(data))
 
                 setTimeout(() => {
                   setScreen('profile')
                 }, 4000)
               }}
+
             />
           )}
 
-          {screen === 'analysis-processing' && (
-            <AnalysisProcessingScreen />
+          {screen === 'profile' && (
+            <SkinProfileScreen
+              analysisData={analysisData}
+              onNext={() => setScreen('summary')}
+              onDemographics={() => setScreen('summary')}
+              onBack={() => setScreen('camera')}
+            />
           )}
 
-          {screen === 'profile' && (
-            <SkinProfileScreen />
+          {screen === 'summary' && (
+            <SummaryScreen
+              analysisData={analysisData}
+              onHome={() => setScreen('intro')}
+              onBack={() => setScreen('profile')}
+            />
           )}
 
         </div>
@@ -230,5 +234,6 @@ export default function Home() {
       </AnimatePresence>
 
     </main>
+
   )
 }

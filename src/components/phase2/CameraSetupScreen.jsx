@@ -1,43 +1,93 @@
 import ScreenLayout from '@/components/shared/ScreenLayout'
-import ScreenContent from '@/components/shared/ScreenContent'
 import ScreenLabel from '@/components/shared/ScreenLabel'
 
 export default function CameraSetupScreen() {
   return (
-    <ScreenLayout>
+   <ScreenLayout hideRhombus>
 
-      <ScreenLabel className="absolute left-8 top-20 text-[16px] font-semibold tracking-[-0.02em]">
-        PREPARING CAMERA
-      </ScreenLabel>
+  {/* TOP LEFT */}
+  <div className="fixed left-[24px] top-[78px] z-50">
+    <ScreenLabel
+      className="text-[13px] font-medium tracking-[-0.02em] text-black"
+    >
+      TO START ANALYSIS
+    </ScreenLabel>
+  </div>
 
-      <ScreenContent className="gap-8">
+  {/* CENTER */}
+  <section className="absolute inset-0 flex items-center justify-center">
 
-        <div className="relative flex h-[180px] w-[180px] items-center justify-center">
+    <div className="flex scale-[1.08] flex-col items-center">
 
-          <div className="absolute h-[180px] w-[180px] rotate-45 animate-spin-slow border border-dashed border-black/20"/>
+      {/* CAMERA AREA */}
+      <div className="relative flex h-[360px] w-[360px] items-center justify-center">
 
-          <div className="absolute h-[130px] w-[130px] -rotate-45 animate-spin-reverse border border-dashed border-black/20"/>
+        {/* RHOMBUSES */}
+        <div className="absolute inset-0 flex items-center justify-center">
 
-          <div className="absolute h-[80px] w-[80px] rounded-full border border-black/30"/>
+          <div className="absolute flex items-center justify-center animate-rhombusSlow">
+          <div className="h-[300px] w-[300px] rotate-45 border border-dashed border-black/18" />
+        </div>
 
-          <div className="absolute h-[28px] w-[28px] rounded-full bg-black"/>
+          <div className="absolute flex items-center justify-center animate-rhombusMedium">
+          <div className="h-[272px] w-[272px] rotate-[41deg] border border-dashed border-black/24" />
+        </div>
+
+          <div className="absolute flex items-center justify-center animate-rhombusFast">
+          <div className="h-[244px] w-[244px] rotate-[37deg] border border-dashed border-black/32" />
+        </div>
+        </div>
+        {/* CAMERA ICON + TITLE */}
+        <div className="relative z-10 flex flex-col items-center">
+
+          <div className="flex h-[84px] w-[84px] items-center justify-center rounded-full border-[2px] border-black">
+
+            <div className="flex h-[46px] w-[46px] items-center justify-center rounded-full border-[8px] border-black" />
+
+          </div>
+
+          <p className="mt-[18px] font-['Roobert_TRIAL'] text-[18px] font-medium uppercase tracking-[-0.03em] text-black">
+            SETTING UP CAMERA ...
+          </p>
 
         </div>
 
-        <div className="flex flex-col items-center gap-2">
+      </div>
 
-          <ScreenLabel className="text-[11px] font-normal tracking-[0.12em] text-black/50">
-            INITIALIZING CAMERA
-          </ScreenLabel>
+      {/* LOWER CONTENT */}
+      <div className="mt-[14px] flex flex-col items-center">
 
-          <ScreenLabel className="text-[10px] font-normal tracking-[0.08em] text-black/30">
-            PLEASE WAIT
-          </ScreenLabel>
+        <p className="font-['Roobert_TRIAL'] text-[10px] uppercase tracking-[0.08em] text-black">
+          TO GET BETTER RESULTS MAKE SURE TO HAVE
+        </p>
+
+        <div className="mt-[22px] flex items-center gap-[38px] font-['Roobert_TRIAL'] text-[10px] uppercase text-black">
+
+          <span>◇ NEUTRAL EXPRESSION</span>
+
+          <span>◇ FRONTAL POSE</span>
+
+          <span>◇ ADEQUATE LIGHTING</span>
 
         </div>
 
-      </ScreenContent>
+        {/* PROGRESS */}
+        <div className="mt-[30px] flex items-center gap-[10px]">
 
-    </ScreenLayout>
+          <div className="h-[8px] w-[7px] rounded-full bg-black/35" />
+
+          <div className="h-[8px] w-[360px] rounded-full bg-black/28" />
+
+          <div className="h-[8px] w-[7px] rounded-full bg-black/35" />
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</ScreenLayout>
   )
 }

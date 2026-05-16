@@ -1,16 +1,44 @@
+import { BiSolidRightArrow } from 'react-icons/bi'
+
 export default function ProceedButton({
-  children = 'PROCEED',
   onClick,
-  disabled = false,
-  loading = false,
+  dark = false,
+  children = 'PROCEED',
 }) {
   return (
     <button
       onClick={onClick}
-      disabled={disabled || loading}
-      className="mt-8 md:mt-10 inline-flex h-[38px] md:h-[42px] items-center justify-center bg-black px-[18px] md:px-[22px] font-[Roobert] text-[10px] md:text-[11px]
-       font-medium uppercase tracking-[0.12em] text-white transition-all duration-300 hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-40">
-   {loading ? 'LOADING...' : children}
-   </button>
+      className="flex items-center gap-[20px]"
+    >
+
+      <span
+        className={`inline-block font-['Roobert_TRIAL'] text-[14px] font-semibold uppercase leading-[16px] tracking-[-0.02em] ${
+          dark
+            ? 'text-white'
+            : 'text-black'
+        }`}
+      >
+        {children}
+      </span>
+
+      <div
+        className={`relative inline-flex h-[44px] w-[44px] shrink-0 rotate-45 items-center justify-center border transition-transform duration-200 hover:scale-105 ${
+          dark
+            ? 'border-white'
+            : 'border-[#1A1B1C]/90'
+        }`}
+      >
+
+        <BiSolidRightArrow
+  className={`absolute h-[16px] w-[16px] rotate-[-45deg] ${
+    dark
+      ? 'text-white'
+      : 'text-black'
+  }`}
+/>
+
+      </div>
+
+    </button>
   )
 }

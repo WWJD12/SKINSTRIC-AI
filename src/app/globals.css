@@ -1,13 +1,13 @@
+@import url('https://db.onlinewebfonts.com/c/0ab46e1b2f236c9fad58c1e34cdecdf1?family=Roobert+TRIAL');
+
 @import "tailwindcss";
+
 @font-face {
   font-family: 'Roobert';
-  src: url('../fonts/Roobert-Light.otf')
-    format('opentype');
-
-  font-weight: 600;
+  src: url('../fonts/Roobert-Light.otf') format('opentype');
+  font-weight: 300;
   font-style: normal;
 }
-
 html,
 body {
   width: 100%;
@@ -105,4 +105,13 @@ body {
 
 .animate-scan {
   animation: scan 4s ease-in-out infinite;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }

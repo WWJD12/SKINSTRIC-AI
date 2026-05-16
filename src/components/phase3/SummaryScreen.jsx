@@ -1,132 +1,365 @@
 'use client'
 
+import { useState } from 'react'
+import { MdPlayArrow } from 'react-icons/md'
 import BackButton from '../shared/BackButton'
+import TopBar from '../shared/TopBar'
 
-export default function SummaryScreen() {
-  return (
-    <main className="relative min-h-screen overflow-hidden bg-[#F3F3F0]">
+export default function SummaryScreen({ analysisData, onHome, onBack }) {
+    const [activeCategory, setActiveCategory] = useState('race')
 
-      {/* TOP BAR */}
-      <header className="absolute left-0 top-0 z-20 h-[64px] w-[1920px]">
+    const [selectedOptions, setSelectedOptions] = useState({
+        race: 0,
+        age: 0,
+        sex: 0,
+    })
 
-        <div className="ml-[32px] mt-[23px] flex items-center gap-[6px] opacity-60">
+    if (!analysisData?.data) {
+        return (
+            <main className="flex min-h-screen items-center justify-center bg-[#F3F3F0] px-6 text-center font-['Roobert_TRIAL']">
+                <div>
+                    <p className="text-[18px] text-[#1A1B1C]">
+                        No summary data found.
+                    </p>
 
-         <p className="left-[32px] top-[23px] font-[Roobert] text-[14px] font-semibold uppercase leading-[16px] tracking-[-0.02em] text-black">
-            Skinstric
-            </p>
+                    <button
+                        onClick={onBack || onHome}
+                        className="mt-4 text-[14px] font-semibold uppercase underline"
+                    >
+                        Go back
+                    </button>
+                </div>
+            </main>
+        )
+    }
 
-          <div className="h-[17px] w-[4px] rounded-[2px] border border-[#1A1B1C]" />
+    const formatOptions = (obj) =>
+        Object.entries(obj)
+            .map(([label, value]) => [
+                label.replaceAll('_', ' '),
+                `${Math.round(value * 100)}%`,
+            ])
+            .sort((a, b) => parseInt(b[1]) - parseInt(a[1]))
 
-          <p className="font-[Roobert] text-[14px] font-semibold uppercase leading-[16px] tracking-[-0.02em] text-[#1A1B1C]">
-            Analysis
-          </p>
+    const demographicData = {
+        race: {
+            subtitle: 'Race',
+            options: formatOptions(analysisData.data.race),
+        },
+        age: {
+            subtitle: 'Age',
+            options: formatOptions(analysisData.data.age),
+        },
+        sex: {
+            subtitle: 'Sex',
+            options: formatOptions(analysisData.data.gender),
+        },
+    }
 
-          <div className="h-[17px] w-[4px] scale-x-[-1] rounded-[2px] border border-[#1A1B1C]" />
+    const activeData = demographicData[activeCategory]
+    const selectedOption = selectedOptions[activeCategory]
+    const selectedPercentage = activeData.options[selectedOption][1]
+    const percentageValue = parseInt(selectedPercentage.replace('%', ''))
 
-        </div>
-        <button className="absolute left-[1808px] top-[15px] flex h-[32px] items-center gap-[8px] px-[16px] py-[8px]">
-            
-        </button>
+    const circumference = 2 * Math.PI * 180
+    const strokeDashoffset =
+        circumference - (percentageValue / 100) * circumference
 
-      </header>
+    const raceSelection = demographicData.race.options[selectedOptions.race][0]
+    const ageSelection = demographicData.age.options[selectedOptions.age][0]
+    const sexSelection = demographicData.sex.options[selectedOptions.sex][0]
 
-      {/* TITLE */}
-      <div className="absolute left-[32px] top-[86px]">
+    return (
+        <main className="h-screen overflow-y-auto bg-[#F3F3F0] font-['Roobert_TRIAL']">
+            <TopBar />
 
-        <p className="font-[Roobert] text-[16px] font-semibold uppercase leading-[24px] tracking-[-0.02em] text-[#1A1B1C]">
-          A. I. Analysis
-        </p>
+            <div className="mx-auto w-full max-w-[1920px] px-[32px] pb-[160px] pt-[72px] md:px-[32px] md:pb-[40px] xl:pt-[86px]">
+                {/* TITLE */}
+                <div>
+                    <p className="text-[16px] font-semibold uppercase leading-[24px] tracking-[-0.02em] text-[#1A1B1C]">
+                        A. I. Analysis
+                    </p>
 
-        <h1 className="mt-[2px] font-[Roobert] text-[64px] font-normal uppercase leading-[64px] tracking-[-0.06em] text-[#1A1B1C]">
-          Demographics
-        </h1>
+                    <h1 className="mt-[4px] text-[28px] font-normal uppercase leading-[30px] tracking-[-0.06em] text-[#1A1B1C] md:text-[72px] md:leading-[48px] xl:leading-[64px]">
+                        Demographics
+                    </h1>
 
-        <p className="mt-[6px] font-[Roobert] text-[12px] uppercase leading-[16px] tracking-[-0.02em] text-[#1A1B1C]/60">
-          Predicted race & age
-        </p>
+                    <p className="mt-[10px] text-[14px] font-normal uppercase leading-[24px] text-[#1A1B1C] xl:text-[16px]">
+                        Predicted race & age
+                    </p>
+                </div>
 
-      </div>
+                {/* CONTENT */}
+                <div className="mt-[32px] flex flex-col gap-[14px] md:mt-[60px] md:flex-row md:gap-[14px] xl:mt-[80px]">
 
-      {/* MAIN PANEL */}
-      <div className="absolute left-[32px] top-[280px] flex">
+                    {/* LEFT COLUMN */}
+                    <div className="flex w-full shrink-0 flex-col gap-[12px] md:w-[56px] md:min-w-[56px] xl:w-[208px] xl:min-w-[208px]">
 
-        {/* LEFT INFO */}
-<div className="flex flex-col">
 
-  {/* RACE */}
-  <div className="flex h-[104px] w-[208px] flex-col justify-between bg-[#1A1B1C] px-[16px] py-[12px]">
+                        {[
+                            {
+                                key: 'race',
+                                value: raceSelection,
+                                subtitle: demographicData.race.subtitle,
+                            },
+                            {
+                                key: 'age',
+                                value: ageSelection,
+                                subtitle: demographicData.age.subtitle,
+                            },
+                            {
+                                key: 'sex',
+                                value: sexSelection,
+                                subtitle: demographicData.sex.subtitle,
+                            },
+                        ].map((item) => (
+                            <button
+                                key={item.key}
+                                onClick={() => setActiveCategory(item.key)}
+                                className="group text-left"
+                            >
+                                <div className="h-[1px] w-full bg-[#1A1B1C]/30" />
 
-    <p className="font-[Roobert] text-[14px] font-semibold uppercase leading-[16px] tracking-[-0.02em] text-[#F3F3F0]">
-      East Asian
-    </p>
+                                <div
+                                    className={`flex h-[76px] w-full flex-col items-start justify-between px-[12px] py-[10px] transition-all duration-200 md:h-[96px] xl:h-[104px] ${activeCategory === item.key
+                                            ? 'bg-[#1A1B1C]'
+                                            : 'bg-[#E7E7E7] hover:bg-[#2A2B2D]'
+                                        }`}
+                                >
+                                    <p
+                                        className={`text-[16px] font-semibold uppercase leading-[24px] tracking-[-0.02em] md:text-[12px] md:leading-[18px] lg:text-[16px] lg:leading-[24px] ${activeCategory === item.key
+                                                ? 'text-[#FCFCFC]'
+                                                : 'text-[#1A1B1C] group-hover:text-[#FCFCFC]'
+                                            }`}
+                                    >
+                                        {item.value}
+                                    </p>
 
-    <p className="font-[Roobert] text-[14px] uppercase leading-[16px] tracking-[-0.02em] text-[#F3F3F0]">
-      Race
-    </p>
+                                    <p
+                                        className={`text-[16px] font-semibold uppercase leading-[24px] tracking-[-0.02em] md:text-[12px] md:leading-[18px] lg:text-[16px] lg:leading-[24px] ${activeCategory === item.key
+                                                ? 'text-[#FCFCFC]'
+                                                : 'text-[#1A1B1C] group-hover:text-[#FCFCFC]'
+                                            }`}
+                                    >
+                                        {item.subtitle}
+                                    </p>
+                                </div>
+                            </button>
+                        ))}
+                    </div>
 
-  </div>
+                    {/* CENTER PANEL */}
+                    <div className="relative hidden min-h-[520px] flex-1 overflow-hidden border border-[#D0D0D0] bg-[#EFEFEF] md:block xl:min-h-[544px]">
 
-  {/* AGE */}
-  <div className="mt-[2px] flex h-[104px] w-[208px] flex-col justify-between bg-[#D9D9D9] px-[16px] py-[12px]">
 
-    <p className="font-[Roobert] text-[14px] font-semibold uppercase leading-[16px] tracking-[-0.02em] text-[#1A1B1C]">
-      20-29
-    </p>
+                        <div className="h-[1px] w-full bg-[#1A1B1C]/30" />
 
-    <p className="font-[Roobert] text-[14px] uppercase leading-[16px] tracking-[-0.02em] text-[#1A1B1C]">
-      Age
-    </p>
+                        <p className="absolute left-[16px] top-[16px] text-[40px] font-normal leading-[40px] tracking-[-0.04em] text-[#1A1B1C]">
+                            {activeData.options[selectedOption][0]}
+                        </p>
 
-  </div>
+                        <div className="absolute left-1/2 top-[65%] h-[410px] w-[410px] -translate-x-1/2 -translate-y-1/2 xl:left-auto xl:right-[40px] xl:top-1/2 xl:h-[384px] xl:w-[384px] xl:translate-x-0">
 
-  {/* SEX */}
-  <div className="mt-[2px] flex h-[104px] w-[208px] flex-col justify-between bg-[#E7E7E7] px-[16px] py-[12px]">
 
-    <p className="font-[Roobert] text-[14px] font-semibold uppercase leading-[16px] tracking-[-0.02em] text-[#1A1B1C]">
-      Female
-    </p>
+                            <svg
+                                className="h-full w-full -rotate-90"
+                                viewBox="0 0 384 384"
+                            >
+                                <circle
+                                    cx="192"
+                                    cy="192"
+                                    r="180"
+                                    stroke="#D9D9D9"
+                                    strokeWidth="6"
+                                    fill="none"
+                                />
 
-    <p className="font-[Roobert] text-[14px] uppercase leading-[16px] tracking-[-0.02em] text-[#1A1B1C]">
-      Sex
-    </p>
+                                <circle
+                                    cx="192"
+                                    cy="192"
+                                    r="180"
+                                    stroke="#1A1B1C"
+                                    strokeWidth="6"
+                                    fill="none"
+                                    strokeDasharray={circumference}
+                                    strokeDashoffset={strokeDashoffset}
+                                    strokeLinecap="butt"
+                                    className="transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                                />
+                            </svg>
 
-  </div>
+                            <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-start">
+                                <p className="text-[40px] font-normal leading-[40px] tracking-[-0.05em] text-[#1A1B1C]">
+                                    {percentageValue}
+                                </p>
 
-</div>
-        {/* CENTER PANEL */}
-        <div className="ml-[8px] h-[544px] w-[1200px] border border-[#D0D0D0] bg-[#EFEFEF]">
+                                <p className="ml-[2px] text-[30px] font-normal leading-[32px] tracking-[-0.05em] text-[#1A1B1C]">
+                                    %
+                                </p>
+                            </div>
+                        </div>
+                    </div>
 
-          <p className="ml-[16px] mt-[16px] font-[Roobert] text-[40px] tracking-[-0.04em] text-[#1A1B1C]">
-            East asian
-          </p>
+                    {/* RIGHT PANEL */}
+                    <div className="relative w-full bg-[#FEFEFE] md:min-h-[660px] md:w-[165px] md:shrink-0 md:border md:border-[#D0D0D0] md:bg-[#EFEFEF] xl:min-h-[544px] xl:w-[448px]">
 
-        </div>
 
-        {/* RIGHT PANEL */}
-        <div className="ml-[8px] h-[544px] w-[454px] border border-[#D0D0D0] bg-[#EFEFEF]" />
 
-      </div>
 
-      {/* FOOTER */}
-      <p className="absolute bottom-[32px] left-1/2 -translate-x-1/2 font-[Roobert] text-[10px] uppercase tracking-[-0.02em] text-[#1A1B1C]/40">
-        If A.I. estimate is wrong, select the correct one.
-      </p>
+                        <div className="hidden h-[1px] w-full bg-[#1A1B1C]/30 md:block" />
 
-      {/* BUTTONS */}
-      <div className="absolute bottom-[24px] right-[32px] flex items-center gap-[8px]">
 
-        <button className="flex h-[35px] items-center justify-center border border-[#1A1B1C] px-[16px] font-[Roobert] text-[14px] font-semibold uppercase tracking-[-0.02em] text-[#1A1B1C]">
-          Reset
-        </button>
+                        {/* MOBILE CHART */}
+                        <div className="relative mb-[18px] flex h-[348px] items-center justify-center overflow-hidden bg-[#F3F3F0] md:hidden">
 
-        <button className="flex h-[35px] items-center justify-center bg-[#1A1B1C] px-[16px] font-[Roobert] text-[14px] font-semibold uppercase tracking-[-0.02em] text-[#F3F3F0]">
-          Confirm
-        </button>
 
-      </div>
+                            <div className="absolute left-1/2 top-[52%] h-[276px] w-[276px] -translate-x-1/2 -translate-y-1/2">
 
-      <BackButton />
 
-    </main>
-  )
+                                <svg
+                                    className="h-full w-full -rotate-90"
+                                    viewBox="0 0 384 384"
+                                >
+                                    <circle
+                                        cx="192"
+                                        cy="192"
+                                        r="180"
+                                        stroke="#D9D9D9"
+                                        strokeWidth="6"
+                                        fill="none"
+                                    />
+
+                                    <circle
+                                        cx="192"
+                                        cy="192"
+                                        r="180"
+                                        stroke="#1A1B1C"
+                                        strokeWidth="6"
+                                        fill="none"
+                                        strokeDasharray={circumference}
+                                        strokeDashoffset={strokeDashoffset}
+                                        strokeLinecap="butt"
+                                        className="transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                                    />
+                                </svg>
+
+                                <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-start">
+                                    <p className="text-[32px] font-normal leading-[32px] tracking-[-0.05em] text-[#1A1B1C]">
+                                        {percentageValue}
+                                    </p>
+
+                                    <p className="ml-[2px] text-[18px] font-normal leading-[20px] tracking-[-0.05em] text-[#1A1B1C]">
+                                        %
+                                    </p>
+                                </div>
+                            </div>
+
+                           <p className="absolute bottom-[28px] left-1/2 w-full -translate-x-1/2 px-[16px] text-center text-[12px] font-normal leading-[12px] tracking-[-0.02em] text-[#B8BDC6]">
+
+                                If A.I. estimate is wrong, select the correct one.
+                            </p>
+                        </div>
+
+
+                        {/* TABLE */}
+                        <div className="mt-[16px] bg-[#EFEFEF] pt-[16px]">
+
+                            <div className="flex items-center justify-between px-[24px]">
+                                <p className="text-[14px] font-semibold uppercase leading-[24px] text-[#1A1B1C] xl:text-[16px]">
+                                    {activeData.subtitle}
+                                </p>
+
+                                <p className="text-[14px] font-semibold uppercase leading-[24px] text-[#1A1B1C] xl:text-[16px]">
+                                    A.I Confidence
+                                </p>
+                            </div>
+
+                            <div className="mt-[8px] pb-[12px]">
+
+                                {activeData.options.map(([label, value], index) => (
+                                    <button
+                                        key={label}
+                                        onClick={() =>
+                                            setSelectedOptions({
+                                                ...selectedOptions,
+                                                [activeCategory]: index,
+                                            })
+                                        }
+                                        className={`flex h-[44px] w-full items-center transition-colors duration-150 ${selectedOption === index
+                                                ? 'bg-[#1A1B1C]'
+                                                : 'hover:bg-black/5'
+                                            }`}
+                                    >
+                                        <div
+                                            className={`relative ml-[24px] h-[12px] w-[12px] rotate-45 border ${selectedOption === index
+                                                    ? 'border-[#FCFCFC]'
+                                                    : 'border-[#1A1B1C]'
+                                                }`}
+                                        >
+                                            {selectedOption === index && (
+                                                <svg
+                                                    className="absolute left-[3px] top-[4px] -rotate-45"
+                                                    width="3"
+                                                    height="3"
+                                                    viewBox="0 0 3 3"
+                                                    fill="none"
+                                                >
+                                                    <polygon points="0,1.5 3,0 3,3" fill="#FCFCFC" />
+                                                </svg>
+                                            )}
+                                        </div>
+
+                                        <p
+                                            className={`ml-[12px] min-w-0 flex-1 truncate text-left text-[12px] lg:ml-[18px] lg:text-[16px]
+                                             ${selectedOption === index
+                                                    ? 'text-[#FCFCFC]'
+                                                    : 'text-[#1A1B1C]'
+                                                }`}
+                                        >
+                                            {label}
+                                        </p>
+
+                                        <p
+                                            className={`ml-[8px] mr-[10px] shrink-0 text-[12px] lg:ml-[12px] lg:mr-[18px] lg:text-[16px] ${selectedOption === index
+                                                    ? 'text-[#FCFCFC]'
+                                                    : 'text-[#1A1B1C]'
+                                                }`}
+                                        >
+                                            {value}
+                                        </p>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+               
+                     <p className="mt-[18px] hidden text-center text-[16px] font-normal leading-[16px] tracking-[-0.02em] text-[#B8BDC6] md:block">
+                    If A.I. estimate is wrong, select the correct one.
+                </p>
+                {/* NAV */}
+                  <div className="pointer-events-none fixed bottom-[72px] left-1/2 z-50 flex w-full max-w-[430px] -translate-x-1/2 items-center justify-between px-[52px] md:static md:mt-[44px] md:max-w-none md:translate-x-0 md:px-[28px] md:pb-[24px] xl:mt-[24px] xl:px-[8px] xl:pb-0">
+                    <div className="pointer-events-auto shrink-0">
+                        <BackButton onClick={onBack} />
+                    </div>
+
+                    <button
+                        onClick={onHome}
+                        className="pointer-events-auto flex shrink-0 items-center gap-[12px]"
+                    >
+                        <span className="text-[14px] font-semibold uppercase leading-[16px] tracking-[-0.02em] text-[#1A1B1C]">
+                            Home
+                        </span>
+
+                        <div className="flex h-[44px] w-[44px] rotate-45 items-center justify-center border border-[#1A1B1C] bg-[#F3F3F0]">
+                            <MdPlayArrow className="h-[24px] w-[24px] -rotate-45 text-[#1A1B1C]" />
+                        </div>
+                    </button>
+                  
+                </div>
+            </div>
+             
+        </main>
+    )
 }

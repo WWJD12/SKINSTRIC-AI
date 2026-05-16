@@ -6,11 +6,14 @@ import BackButton from "../shared/BackButton"
 
 
 export default function CameraScreen({ onCapture, onBack, }) {
- 
+
   const videoRef = useRef(null)
   const canvasRef = useRef(null)
+  const streamRef = useRef(null)
 
   const [cameraReady, setCameraReady] = useState(false)
+  const [previewImage, setPreviewImage] = useState(null)
+  const [isAnalyzing, setIsAnalyzing] = useState(false)
 
   useEffect(() => {
     let stream
@@ -20,6 +23,8 @@ export default function CameraScreen({ onCapture, onBack, }) {
         stream = await navigator.mediaDevices.getUserMedia({
           video: true,
         })
+
+        streamRef.current = stream
 
         if (videoRef.current) {
           videoRef.current.srcObject = stream
@@ -55,160 +60,243 @@ export default function CameraScreen({ onCapture, onBack, }) {
     ctx.drawImage(video, 0, 0)
 
     const image = canvas.toDataURL("image/png")
+    setPreviewImage(image)
+
+    fetch(
+      'https://us-central1-frontend-simplified.cloudfunctions.net/skinstricPhaseTwo',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          image,
+        }),
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data)
+
+        window.analysisResult = data
+      })
+      .catch((err) => {
+        console.error(err)
+      })
 
     console.log("Captured image:", image)
 
-    onCapture(image)
   }
 
   return (
     <ScreenLayout
       dark
+      hideRhombus
       onBack={onBack}
     >
+      <div className="relative h-screen w-screen overflow-hidden bg-black">
 
-      {/* CAMERA VIDEO */}
-      <div className="absolute inset-0">
+        {/* CAMERA VIDEO */}
+        <div className="absolute inset-0 z-0">
 
-        <video
-          ref={videoRef}
-          autoPlay
-          playsInline
-          muted
-          onLoadedMetadata={() => {
-            setCameraReady(true)
-          }}
-          className={`h-full w-full object-cover transition-opacity duration-700 ${
-            cameraReady ? "opacity-100" : "opacity-0"
-          }`}
-        />
-
-      </div>
-
-      {/* LOADING */}
-      {!cameraReady && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black">
-
-          <p className="text-sm uppercase tracking-[0.3em] text-white/70">
-            Initializing Camera...
-          </p>
-
-        </div>
-      )}
-
-      {/* DARK OVERLAY */}
-      <div className="pointer-events-none absolute inset-0 z-10 bg-black/30" />
-
-      {/* SCAN LINE */}
-      <div className="pointer-events-none absolute inset-0 z-20 overflow-hidden opacity-30">
-
-        <div className="absolute top-0 h-[1px] w-full animate-scan bg-white/40" />
-
-      </div>
-
-      {/* INSTRUCTION PANEL */}
-      <div className="absolute bottom-28 left-1/2 z-30 flex w-full -translate-x-1/2 flex-col items-center px-6 text-white">
-
-        <p className="mb-4 text-center text-[12px] uppercase tracking-[0.08em] text-white">
-          TO GET BETTER RESULTS MAKE SURE TO HAVE
-        </p>
-
-        <div className="flex flex-wrap items-center justify-center gap-6">
-
-          {/* NEUTRAL */}
-          <div className="flex items-center gap-2">
-
-            <div className="h-[8px] w-[8px] rotate-45 border border-white" />
-
-            <p className="text-[12px] uppercase text-white">
-              Neutral Expression
-            </p>
-
-          </div>
-
-          {/* FRONTAL */}
-          <div className="flex items-center gap-2">
-
-            <div className="h-[8px] w-[8px] rotate-45 border border-white" />
-
-            <p className="text-[12px] uppercase text-white">
-              Frontal Pose
-            </p>
-
-          </div>
-
-          {/* LIGHTING */}
-          <div className="flex items-center gap-2">
-
-            <div className="h-[8px] w-[8px] rotate-45 border border-white" />
-
-            <p className="text-[12px] uppercase text-white">
-              Adequate Lighting
-            </p>
-
-          </div>
+          {!previewImage ? (
+            <video
+              key={previewImage ? "preview" : "live"}
+              ref={videoRef}
+              autoPlay
+              playsInline
+              muted
+              onLoadedMetadata={() => {
+                setCameraReady(true)
+              }}
+              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+                cameraReady ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          ) : (
+            <img
+              src={previewImage}
+              alt="Preview"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          )}
 
         </div>
 
-      </div>
+        {/* LOADING */}
+        {!cameraReady && (
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-black">
 
-      {/* TAKE PICTURE BUTTON */}
-<div className="absolute right-8 top-1/2 z-40 -translate-y-1/2 md:right-14">
+            <p className="text-sm uppercase tracking-[0.3em] text-white/70">
+              Initializing Camera...
+            </p>
 
-  <button
-    onClick={handleCapture}
-    className="group flex items-center gap-4"
-  >
+          </div>
+        )}
 
-    {/* TEXT */}
-    <p className="text-[14px] font-semibold uppercase tracking-[-0.02em] text-white/70 transition-all duration-300 group-hover:text-white">
-      take picture
-    </p>
+        {!previewImage && (
+          <div className="absolute bottom-28 left-1/2 z-30 flex w-full -translate-x-1/2 flex-col items-center px-6 text-white">
 
-    {/* BUTTON */}
-<div className="relative flex h-[62px] w-[62px] items-center justify-center rounded-full border-2 border-white/70 transition-all duration-300 group-hover:scale-110 group-hover:border-white">
+            <p className="mb-4 text-center text-[12px] uppercase tracking-[0.08em] text-white">
+              TO GET BETTER RESULTS MAKE SURE TO HAVE
+            </p>
 
-      {/* INNER CIRCLE */}
-      <div className="absolute h-[55px] w-[55px] rounded-full bg-white" />
+            <div className="flex flex-wrap items-center justify-center gap-6">
 
-      {/* CAMERA ICON */}
-       <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="#A0A4AB"
-    strokeWidth="1.5"
-    className="relative z-10 h-[26px] w-[26px]"
-  >
-       <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M3 7.5A2.25 2.25 0 015.25 5.25h2.379a1.5 1.5 0 001.06-.44l.621-.62a1.5 1.5 0 011.06-.44h3.258a1.5 1.5 0 011.06.44l.62.62a1.5 1.5 0 001.061.44h2.379A2.25 2.25 0 0121 7.5v9.25A2.25 2.25 0 0118.75 19H5.25A2.25 2.25 0 013 16.75V7.5z"
-    />
+              {/* NEUTRAL */}
+              <div className="flex items-center gap-2">
 
-        <circle
-          cx="12"
-          cy="12"
-          r="3.5"
+                <div className="h-[8px] w-[8px] rotate-45 border border-white" />
+
+                <p className="text-[12px] uppercase text-white">
+                  Neutral Expression
+                </p>
+
+              </div>
+
+              {/* FRONTAL */}
+              <div className="flex items-center gap-2">
+
+                <div className="h-[8px] w-[8px] rotate-45 border border-white" />
+
+                <p className="text-[12px] uppercase text-white">
+                  Frontal Pose
+                </p>
+
+              </div>
+
+              {/* LIGHTING */}
+              <div className="flex items-center gap-2">
+
+                <div className="h-[8px] w-[8px] rotate-45 border border-white" />
+
+                <p className="text-[12px] uppercase text-white">
+                  Adequate Lighting
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+        )}
+
+        {/* TAKE PICTURE BUTTON */}
+        {!previewImage && (
+
+          <div className="absolute right-[48px] top-1/2 z-40 -translate-y-1/2">
+
+            <button
+              onClick={handleCapture}
+              className="flex items-center gap-3"
+            >
+
+              {/* TEXT */}
+              <span className="mr-3 font-['Roobert_TRIAL'] text-[12px] font-medium uppercase tracking-[-0.02em] text-white">
+                TAKE PICTURE
+              </span>
+
+              {/* CAMERA BUTTON */}
+              <div className="flex h-[54px] w-[54px] items-center justify-center rounded-full border border-white bg-white/90">
+
+                {/* CAMERA ICON */}
+                <div className="flex h-[18px] w-[18px] items-center justify-center rounded-md border border-[#999]">
+
+                  <div className="h-[8px] w-[8px] rounded-full border border-[#999]" />
+
+                </div>
+
+              </div>
+
+            </button>
+
+          </div>
+
+        )}
+
+        {previewImage && (
+          <div className="absolute inset-0 z-50 flex flex-col items-center justify-center text-white">
+
+            {/* TOP TEXT */}
+            <p className="absolute top-[28%] font-['Roobert_TRIAL'] text-[15px] font-medium uppercase tracking-[-0.02em]">
+              Great Shot!
+            </p>
+
+            {/* BOTTOM PANEL */}
+            <div className="absolute bottom-24 flex flex-col items-center gap-5">
+
+              <p className="font-['Roobert_TRIAL'] text-[18px] font-medium tracking-[-0.03em]">
+                Preview
+              </p>
+
+              <div className="flex items-center gap-2">
+
+                {/* RETAKE */}
+                <button
+                  onClick={() => {
+                    setPreviewImage(null)
+
+                    setTimeout(() => {
+                      if (videoRef.current && streamRef.current) {
+                        videoRef.current.srcObject = streamRef.current
+
+                        videoRef.current.play()
+                      }
+                    }, 100)
+                  }}
+                  className="border border-white bg-white px-5 py-[6px] font-['Roobert_TRIAL'] text-[12px] font-medium uppercase tracking-[-0.02em] text-black transition-opacity hover:opacity-80"
+                >
+                  Retake
+                </button>
+
+                {/* USE PHOTO */}
+                <button
+                  onClick={() => {
+                    setIsAnalyzing(true)
+
+                    setTimeout(() => {
+                      onCapture(window.analysisResult)
+                    }, 300)
+                  }}
+                  className="border border-black bg-black px-5 py-[6px] font-['Roobert_TRIAL'] text-[12px] font-medium uppercase tracking-[-0.02em] text-white transition-opacity hover:opacity-80"
+                >
+                  Use This Photo
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+        )}
+
+        {isAnalyzing && (
+          <div className="absolute inset-0 z-[90] bg-black/20">
+
+            <div className="absolute inset-0 flex items-center justify-center">
+
+              <div className="flex flex-col items-center gap-6 text-white">
+
+                <div className="rounded-2xl border border-white/20 bg-white/10 px-8 py-5 backdrop-blur-md">
+                  <p className="text-[14px] uppercase tracking-[0.3em] text-white">
+                    Analyzing Image...
+                  </p>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+        )}
+
+        {/* HIDDEN CANVAS */}
+        <canvas
+          ref={canvasRef}
+          className="hidden"
         />
-      </svg>
 
-    </div>
-
-  </button>
-
-</div>
-
-      {/* HIDDEN CANVAS */}
-      <canvas
-        ref={canvasRef}
-        className="hidden"
-      />
-   <BackButton
-   dark
-     onClick={onBack} 
-   />
-  
+      </div>
     </ScreenLayout>
   )
 }

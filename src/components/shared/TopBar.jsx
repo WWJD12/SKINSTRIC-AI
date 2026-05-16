@@ -1,40 +1,32 @@
 export default function TopBar({
-  showEnterCode = false,
+  showEnterCode = true,
   dark = false,
 }) {
   return (
-    <header className="absolute left-0 top-0 z-50 flex h-[64px] w-full items-center px-5 md:px-[28px]">
-
-      <div className="flex items-center gap-[8px]">
-
+    <header className="absolute left-0 top-0 z-50 flex h-[64px] w-full items-center px-[24px] pt-[23px] md:px-[32px]">
+      <div className="flex min-w-0 items-center gap-[6px] opacity-60">
         <span
-          className={`text-[8px] font-semibold uppercase tracking-[0.14em] md:text-[9px] ${
-            dark
-              ? "text-white"
-              : "text-[#1A1B1C]"
+          className={`font-['Roobert_TRIAL'] text-[12px] font-semibold uppercase leading-[16px] tracking-[-0.02em] md:text-[14px] ${
+            dark ? 'text-white' : 'text-[#1A1B1C]'
           }`}
         >
           SKINSTRIC
         </span>
 
         <span
-          className={`text-[8px] uppercase tracking-[0.14em] md:text-[9px] ${
-            dark
-              ? "text-white/40"
-              : "text-black/35"
+          className={`truncate font-['Roobert_TRIAL'] text-[12px] font-semibold uppercase leading-[16px] tracking-[-0.02em] md:text-[14px] ${
+            dark ? 'text-white' : 'text-[#1A1B1C]'
           }`}
         >
           [ INTRO ]
         </span>
-
       </div>
 
       {showEnterCode && (
-        <button className="ml-auto flex h-[24px] items-center justify-center bg-black px-[10px] text-[6px] uppercase tracking-[0.12em] text-white md:h-[26px] md:px-[12px] md:text-[7px]">
+        <button className="ml-auto flex h-[32px] shrink-0 items-center justify-center bg-black px-[14px] font-['Roobert_TRIAL'] text-[10px] font-semibold uppercase leading-[16px] tracking-[0.02em] text-white md:px-[16px]">
           ENTER CODE
         </button>
       )}
-
     </header>
   )
 }
