@@ -73,7 +73,7 @@ export default function SummaryScreen({ analysisData, onHome, onBack }) {
         <main className="h-screen overflow-y-auto md:overflow-hidden bg-[#F3F3F0] font-['Roobert_TRIAL']">
             <TopBar />
 
-             <div className="mx-auto w-full max-w-[1920px] px-[32px] pb-[160px] pt-[72px] md:pb-[20px] md:pt-[64px] lg:pb-[40px] lg:pt-[72px] xl:pt-[86px]">                {/* TITLE */}
+             <div className="mx-auto w-full max-w-[1920px] px-[32px] pb-[160px] pt-[48px] md:pb-[20px] md:pt-[64px] lg:pb-[40px] lg:pt-[72px] xl:pt-[56px]">                {/* TITLE */}
                 <div>
                     <p className="text-[16px] font-semibold uppercase leading-[24px] tracking-[-0.02em] text-[#1A1B1C]">
                         A. I. Analysis
@@ -339,10 +339,8 @@ export default function SummaryScreen({ analysisData, onHome, onBack }) {
                     If A.I. estimate is wrong, select the correct one.
                 </p>
                 {/* NAV */}
-                <div className="fixed bottom-[72px] left-0 right-0 z-50 flex justify-between px-[52px] md:static md:mt-[12px] md:px-[28px] lg:fixed lg:bottom-[38px] lg:mt-0 lg:px-[42px] xl:bottom-[34px] xl:px-[52px]">
-  <div>
-    <BackButton onClick={onBack} />
-  </div>
+{/* NAV */}
+<div className="fixed bottom-[72px] left-0 right-0 z-50 flex justify-between px-[52px] md:bottom-[28px] md:px-[42px] lg:bottom-[36px] xl:bottom-[38px] xl:px-[52px]">  <BackButton onClick={onBack} />
 
   <button
     onClick={onHome}

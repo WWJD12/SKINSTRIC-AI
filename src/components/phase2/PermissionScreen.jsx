@@ -29,8 +29,7 @@ function CameraChoice({ onClick }) {
     <ChoiceShell onClick={onClick}>
       <RhombusSet />
 
-      <div className="relative z-10 mt-[42px] flex h-[82px] w-[82px] items-center justify-center rounded-full border border-black/30 bg-[#FDFDFB] md:mt-0 md:h-[96px] md:w-[96px]">
-
+      <div className="relative z-10 mt-[74px] flex h-[82px] w-[82px] items-center justify-center rounded-full border border-black/30 bg-[#FDFDFB] md:mt-0 md:h-[96px] md:w-[96px]">
         <MdOutlineCamera className="text-[106px] text-black md:text-[92px]" />
       </div>
 
@@ -49,7 +48,7 @@ function CameraChoice({ onClick }) {
         TO SCAN YOUR FACE
       </p>
 
-      <p className="relative z-10 mt-[28px] w-[150px] whitespace-nowrap text-left font-['Roobert_TRIAL'] text-[12px] uppercase leading-[20px] tracking-[0.05em] text-black/70 md:hidden">
+      <p className="relative z-10 mt-[28px] w-[150px] text-left font-['Roobert_TRIAL'] text-[12px] uppercase leading-[20px] tracking-[0.05em] text-black/70 md:hidden">
         ALLOW A.I.
         <br />
         TO SCAN YOUR FACE
@@ -70,7 +69,7 @@ function GalleryChoice({ onChange }) {
 
       <RhombusSet />
 
-      <div className="relative z-10 mt-[42px] flex h-[82px] w-[82px] items-center justify-center rounded-full border border-black/30 bg-[#FDFDFB] md:mt-0 md:h-[96px] md:w-[96px]">
+      <div className="relative z-10 mt-[74px] flex h-[82px] w-[82px] items-center justify-center rounded-full border border-black/30 bg-[#FDFDFB] md:mt-0 md:h-[96px] md:w-[96px]">
 
         <MdImage className="text-[76px] text-black/85 md:text-[78px]" />
       </div>
@@ -83,14 +82,13 @@ function GalleryChoice({ onChange }) {
         <line x1="136" y1="246" x2="92" y2="288" stroke="#1A1B1C" strokeOpacity="0.45" />
         <circle cx="92" cy="288" r="2.5" fill="#FDFDFB" stroke="#1A1B1C" strokeOpacity="0.65" />
       </svg>
-
       <p className="absolute right-[256px] top-[284px] z-20 hidden w-[160px] text-right font-['Roobert_TRIAL'] text-[12px] uppercase leading-[20px] tracking-[0.05em] text-black/70 md:block">
         ALLOW A.I.
         <br />
         ACCESS GALLERY
       </p>
 
-      <p className="relative z-10 mt-[28px] w-[150px] whitespace-nowrap text-right font-['Roobert_TRIAL'] text-[12px] uppercase leading-[20px] tracking-[0.05em] text-black/70 md:hidden">
+      <p className="relative z-10 mt-[28px] w-[150px] text-right font-['Roobert_TRIAL'] text-[12px] uppercase leading-[20px] tracking-[0.05em] text-black/70 md:hidden">
         ALLOW A.I.
         <br />
         ACCESS GALLERY
@@ -110,7 +108,7 @@ export default function PermissionScreen({ onAllow, onBack, onGallerySelect }) {
         </ScreenLabel>
       </div>
 
-<section className="absolute left-1/2 top-1/2 z-10 flex w-full max-w-[calc(100vw-48px)] -translate-x-1/2 -translate-y-[46%] flex-col items-center gap-[28px] md:max-w-[860px] md:flex-row md:justify-center md:gap-[108px] lg:gap-[250px]">        <CameraChoice onClick={() => setShowPermission(true)} />
+      <section className="absolute left-1/2 top-1/2 z-10 flex w-full max-w-[calc(100vw-48px)] -translate-x-1/2 -translate-y-[46%] flex-col items-center gap-[28px] md:max-w-[860px] md:flex-row md:justify-center md:gap-[108px] lg:gap-[250px]">        <CameraChoice onClick={() => setShowPermission(true)} />
         <GalleryChoice onChange={onGallerySelect} />
       </section>
 
