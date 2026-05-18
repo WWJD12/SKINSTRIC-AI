@@ -70,7 +70,7 @@ export default function SummaryScreen({ analysisData, onHome, onBack }) {
     const sexSelection = demographicData.sex.options[selectedOptions.sex][0]
 
     return (
-        <main className="h-screen overflow-y-auto bg-[#F3F3F0] font-['Roobert_TRIAL']">
+        <main className="h-screen overflow-hidden max-lg:overflow-y-auto bg-[#F3F3F0] font-['Roobert_TRIAL']">
             <TopBar />
 
             <div className="mx-auto w-full max-w-[1920px] px-[32px] pb-[160px] pt-[72px] md:px-[32px] md:pb-[40px] xl:pt-[86px]">
@@ -122,14 +122,14 @@ export default function SummaryScreen({ analysisData, onHome, onBack }) {
 
                                 <div
                                     className={`flex h-[76px] w-full flex-col items-start justify-between px-[12px] py-[10px] transition-all duration-200 md:h-[96px] xl:h-[104px] ${activeCategory === item.key
-                                            ? 'bg-[#1A1B1C]'
-                                            : 'bg-[#E7E7E7] hover:bg-[#2A2B2D]'
+                                        ? 'bg-[#1A1B1C]'
+                                        : 'bg-[#E7E7E7] hover:bg-[#2A2B2D]'
                                         }`}
                                 >
                                     <p
                                         className={`text-[16px] font-semibold uppercase leading-[24px] tracking-[-0.02em] md:text-[12px] md:leading-[18px] lg:text-[16px] lg:leading-[24px] ${activeCategory === item.key
-                                                ? 'text-[#FCFCFC]'
-                                                : 'text-[#1A1B1C] group-hover:text-[#FCFCFC]'
+                                            ? 'text-[#FCFCFC]'
+                                            : 'text-[#1A1B1C] group-hover:text-[#FCFCFC]'
                                             }`}
                                     >
                                         {item.value}
@@ -137,8 +137,8 @@ export default function SummaryScreen({ analysisData, onHome, onBack }) {
 
                                     <p
                                         className={`text-[16px] font-semibold uppercase leading-[24px] tracking-[-0.02em] md:text-[12px] md:leading-[18px] lg:text-[16px] lg:leading-[24px] ${activeCategory === item.key
-                                                ? 'text-[#FCFCFC]'
-                                                : 'text-[#1A1B1C] group-hover:text-[#FCFCFC]'
+                                            ? 'text-[#FCFCFC]'
+                                            : 'text-[#1A1B1C] group-hover:text-[#FCFCFC]'
                                             }`}
                                     >
                                         {item.subtitle}
@@ -254,7 +254,7 @@ export default function SummaryScreen({ analysisData, onHome, onBack }) {
                                 </div>
                             </div>
 
-                           <p className="absolute bottom-[28px] left-1/2 w-full -translate-x-1/2 px-[16px] text-center text-[12px] font-normal leading-[12px] tracking-[-0.02em] text-[#B8BDC6]">
+                            <p className="absolute bottom-[28px] left-1/2 w-full -translate-x-1/2 px-[16px] text-center text-[12px] font-normal leading-[12px] tracking-[-0.02em] text-[#B8BDC6]">
 
                                 If A.I. estimate is wrong, select the correct one.
                             </p>
@@ -286,14 +286,14 @@ export default function SummaryScreen({ analysisData, onHome, onBack }) {
                                             })
                                         }
                                         className={`flex h-[44px] w-full items-center transition-colors duration-150 ${selectedOption === index
-                                                ? 'bg-[#1A1B1C]'
-                                                : 'hover:bg-black/5'
+                                            ? 'bg-[#1A1B1C]'
+                                            : 'hover:bg-black/5'
                                             }`}
                                     >
                                         <div
                                             className={`relative ml-[24px] h-[12px] w-[12px] rotate-45 border ${selectedOption === index
-                                                    ? 'border-[#FCFCFC]'
-                                                    : 'border-[#1A1B1C]'
+                                                ? 'border-[#FCFCFC]'
+                                                : 'border-[#1A1B1C]'
                                                 }`}
                                         >
                                             {selectedOption === index && (
@@ -321,8 +321,8 @@ export default function SummaryScreen({ analysisData, onHome, onBack }) {
 
                                         <p
                                             className={`ml-[8px] mr-[10px] shrink-0 text-[12px] lg:ml-[12px] lg:mr-[18px] lg:text-[16px] ${selectedOption === index
-                                                    ? 'text-[#FCFCFC]'
-                                                    : 'text-[#1A1B1C]'
+                                                ? 'text-[#FCFCFC]'
+                                                : 'text-[#1A1B1C]'
                                                 }`}
                                         >
                                             {value}
@@ -333,22 +333,22 @@ export default function SummaryScreen({ analysisData, onHome, onBack }) {
                         </div>
                     </div>
                 </div>
-               
-               
-                     <p className="mt-[18px] hidden text-center text-[16px] font-normal leading-[16px] tracking-[-0.02em] text-[#B8BDC6] md:block">
+
+
+                <p className="mt-[18px] hidden text-center text-[16px] font-normal leading-[16px] tracking-[-0.02em] text-[#B8BDC6] md:block">
                     If A.I. estimate is wrong, select the correct one.
                 </p>
                 {/* NAV */}
-                  <div className="pointer-events-none fixed bottom-[72px] left-1/2 z-50 flex w-full max-w-[430px] -translate-x-1/2 items-center justify-between px-[52px] md:static md:mt-[44px] md:max-w-none md:translate-x-0 md:px-[28px] md:pb-[24px] xl:mt-[24px] xl:px-[8px] xl:pb-0">
-                    <div className="pointer-events-auto shrink-0">
+                <div className="fixed bottom-[72px] left-0 right-0 z-50 flex items-end justify-between px-[52px] md:static md:mt-[44px] md:px-[28px] lg:fixed lg:bottom-[38px] lg:px-[42px] xl:bottom-[34px] xl:px-[52px]">
+                    <div className="mt-[48px]">
                         <BackButton onClick={onBack} />
                     </div>
 
                     <button
                         onClick={onHome}
-                        className="pointer-events-auto flex shrink-0 items-center gap-[12px]"
+                        className="mt-[72px] flex items-center gap-[12px]"
                     >
-                        <span className="text-[14px] font-semibold uppercase leading-[16px] tracking-[-0.02em] text-[#1A1B1C]">
+                        <span className="text-[14px] font-semibold uppercase leading-[16px] tracking-[0em] text-[#1A1B1C]">
                             Home
                         </span>
 
@@ -356,10 +356,9 @@ export default function SummaryScreen({ analysisData, onHome, onBack }) {
                             <MdPlayArrow className="h-[24px] w-[24px] -rotate-45 text-[#1A1B1C]" />
                         </div>
                     </button>
-                  
                 </div>
             </div>
-             
+
         </main>
     )
 }

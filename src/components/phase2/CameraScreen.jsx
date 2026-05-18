@@ -1,8 +1,8 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import ScreenLayout from '@/components/shared/ScreenLayout'
 import BackButton from "../shared/BackButton"
+import TopBar from "../shared/TopBar"
 
 
 export default function CameraScreen({ onCapture, onBack, }) {
@@ -89,15 +89,13 @@ export default function CameraScreen({ onCapture, onBack, }) {
   }
 
   return (
-    <ScreenLayout
-      dark
-      hideRhombus
-      onBack={onBack}
-    >
-      <div className="relative h-screen w-screen overflow-hidden bg-black">
+    <main className="relative h-screen w-screen overflow-hidden bg-[#FDFDFB]">
+      <TopBar />
+
+      <div className="relative h-screen w-screen overflow-hidden bg-[#FDFDFB]">
 
         {/* CAMERA VIDEO */}
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-x-0 bottom-0 top-[76px] z-0">
 
           {!previewImage ? (
             <video
@@ -135,42 +133,42 @@ export default function CameraScreen({ onCapture, onBack, }) {
         )}
 
         {!previewImage && (
-          <div className="absolute bottom-28 left-1/2 z-30 flex w-full -translate-x-1/2 flex-col items-center px-6 text-white">
+          <div className="absolute bottom-[128px] left-1/2 z-30 flex w-full -translate-x-1/2 flex-col items-center px-6 text-white md:bottom-28">
 
             <p className="mb-4 text-center text-[12px] uppercase tracking-[0.08em] text-white">
               TO GET BETTER RESULTS MAKE SURE TO HAVE
             </p>
 
-            <div className="flex flex-wrap items-center justify-center gap-6">
+            <div className="grid w-full max-w-[340px] grid-cols-3 gap-[10px] md:flex md:max-w-none md:flex-wrap md:items-center md:justify-center md:gap-6">
 
               {/* NEUTRAL */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-start justify-center gap-2">
 
                 <div className="h-[8px] w-[8px] rotate-45 border border-white" />
 
-                <p className="text-[12px] uppercase text-white">
+                <p className="text-center text-[11px] uppercase leading-[18px] text-white md:text-left md:text-[12px] md:leading-normal">
                   Neutral Expression
                 </p>
 
               </div>
 
               {/* FRONTAL */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-start justify-center gap-2">
 
                 <div className="h-[8px] w-[8px] rotate-45 border border-white" />
 
-                <p className="text-[12px] uppercase text-white">
+                <p className="text-center text-[11px] uppercase leading-[18px] text-white md:text-left md:text-[12px] md:leading-normal">
                   Frontal Pose
                 </p>
 
               </div>
 
               {/* LIGHTING */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-start justify-center gap-2">
 
                 <div className="h-[8px] w-[8px] rotate-45 border border-white" />
 
-                <p className="text-[12px] uppercase text-white">
+                <p className="text-center text-[11px] uppercase leading-[18px] text-white md:text-left md:text-[12px] md:leading-normal">
                   Adequate Lighting
                 </p>
 
@@ -184,7 +182,7 @@ export default function CameraScreen({ onCapture, onBack, }) {
         {/* TAKE PICTURE BUTTON */}
         {!previewImage && (
 
-          <div className="absolute right-[48px] top-1/2 z-40 -translate-y-1/2">
+          <div className="absolute right-[28px] top-[52%] z-40 -translate-y-1/2 md:right-[48px] md:top-1/2">
 
             <button
               onClick={handleCapture}
@@ -192,7 +190,7 @@ export default function CameraScreen({ onCapture, onBack, }) {
             >
 
               {/* TEXT */}
-              <span className="mr-3 font-['Roobert_TRIAL'] text-[12px] font-medium uppercase tracking-[-0.02em] text-white">
+              <span className="mr-3 hidden font-['Roobert_TRIAL'] text-[12px] font-medium uppercase tracking-[-0.02em] text-white md:inline">
                 TAKE PICTURE
               </span>
 
@@ -223,7 +221,7 @@ export default function CameraScreen({ onCapture, onBack, }) {
             </p>
 
             {/* BOTTOM PANEL */}
-            <div className="absolute bottom-24 flex flex-col items-center gap-5">
+            <div className="absolute bottom-[144px] flex flex-col items-center gap-5 md:bottom-24">
 
               <p className="font-['Roobert_TRIAL'] text-[18px] font-medium tracking-[-0.03em]">
                 Preview
@@ -290,6 +288,14 @@ export default function CameraScreen({ onCapture, onBack, }) {
           </div>
         )}
 
+        <div
+          className={`absolute left-[24px] z-50 md:bottom-[40px] md:left-[32px] ${
+            previewImage ? 'bottom-[232px]' : 'bottom-[232px]'
+          }`}
+        >
+          <BackButton onClick={onBack} dark />
+        </div>
+
         {/* HIDDEN CANVAS */}
         <canvas
           ref={canvasRef}
@@ -297,6 +303,6 @@ export default function CameraScreen({ onCapture, onBack, }) {
         />
 
       </div>
-    </ScreenLayout>
+    </main>
   )
 }

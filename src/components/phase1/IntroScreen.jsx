@@ -23,13 +23,13 @@ export default function IntroScreen({ onNext }) {
     <ScreenContainer>
       <TopBar showEnterCode />
 
-    <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[340px] w-[340px] -translate-x-1/2 -translate-y-1/2 rotate-45 border border-[#1A1B1C]/10 md:h-[520px] md:w-[520px] lg:hidden" />
+      <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[340px] w-[340px] -translate-x-1/2 -translate-y-1/2 rotate-45 border border-[#1A1B1C]/10 md:h-[520px] md:w-[520px] lg:hidden" />
 
-<div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[276px] w-[276px] -translate-x-1/2 -translate-y-1/2 rotate-45 border border-[#1A1B1C]/10 md:h-[430px] md:w-[430px] lg:hidden" />
+      <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[276px] w-[276px] -translate-x-1/2 -translate-y-1/2 rotate-45 border border-[#1A1B1C]/10 md:h-[430px] md:w-[430px] lg:hidden" />
 
 
 
-      <div className="hidden lg:block">
+      <div className="pointer-events-none absolute inset-0 z-[5] hidden lg:block">
         <LeftLines hoveredSide={hoveredSide} />
         <RightLines hoveredSide={hoveredSide} />
       </div>
@@ -44,22 +44,21 @@ export default function IntroScreen({ onNext }) {
             typeof window !== 'undefined' && window.innerWidth < 1024
               ? 'translate(-50%, -48%)'
               : `translate(${hoveredSide === 'left'
-                ? '-12%'
+                ? '-32%'
                 : hoveredSide === 'right'
-                  ? '-88%'
+                  ? '-68%'
                   : '-50%'
               }, -48%)`,
         }}
       >
-       <h1
-  className={`mx-auto w-full font-['Roobert_TRIAL'] text-[48px] font-light leading-[48px] tracking-[-0.07em] text-[#1A1B1C] antialiased transition-all duration-[900ms] md:w-[460px] md:text-[64px] md:leading-[62px] lg:w-[680px] lg:text-[108px] lg:leading-[108px] ${
-    hoveredSide === 'right'
-      ? 'lg:text-left'
-      : hoveredSide === 'left'
-        ? 'lg:text-right'
-        : 'text-center'
-  }`}
->
+        <h1
+          className={`mx-auto w-full font-['Roobert_TRIAL'] text-[48px] font-light leading-[48px] tracking-[-0.07em] text-[#1A1B1C] antialiased transition-all duration-[900ms] md:w-[460px] md:text-[64px] md:leading-[62px] lg:w-[680px] lg:text-[108px] lg:leading-[108px] ${hoveredSide === 'right'
+              ? 'lg:text-left'
+              : hoveredSide === 'left'
+                ? 'lg:text-right'
+                : 'text-center'
+            }`}
+        >
 
           Sophisticated
           <br />
@@ -112,7 +111,7 @@ export default function IntroScreen({ onNext }) {
         />
       </div>
 
-     <div className="absolute bottom-[32px] left-[20px] z-10 hidden lg:bottom-[52px] lg:left-[34px] lg:block">
+      <div className="absolute bottom-[32px] left-[20px] z-10 hidden lg:bottom-[52px] lg:left-[34px] lg:block">
 
         <p className="w-[260px] font-['Roobert_TRIAL'] text-[14px] uppercase leading-[24px] tracking-[0em] text-[#1A1B1C]">
           Skinstric developed an A.I. that creates a highly-personalised routine tailored to what your skin needs.
