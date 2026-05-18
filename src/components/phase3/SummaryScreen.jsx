@@ -70,11 +70,10 @@ export default function SummaryScreen({ analysisData, onHome, onBack }) {
     const sexSelection = demographicData.sex.options[selectedOptions.sex][0]
 
     return (
-        <main className="h-screen overflow-hidden max-lg:overflow-y-auto bg-[#F3F3F0] font-['Roobert_TRIAL']">
+        <main className="h-screen overflow-y-auto md:overflow-hidden bg-[#F3F3F0] font-['Roobert_TRIAL']">
             <TopBar />
 
-            <div className="mx-auto w-full max-w-[1920px] px-[32px] pb-[160px] pt-[72px] md:px-[32px] md:pb-[40px] xl:pt-[86px]">
-                {/* TITLE */}
+             <div className="mx-auto w-full max-w-[1920px] px-[32px] pb-[160px] pt-[72px] md:pb-[20px] md:pt-[64px] lg:pb-[40px] lg:pt-[72px] xl:pt-[86px]">                {/* TITLE */}
                 <div>
                     <p className="text-[16px] font-semibold uppercase leading-[24px] tracking-[-0.02em] text-[#1A1B1C]">
                         A. I. Analysis
@@ -90,7 +89,8 @@ export default function SummaryScreen({ analysisData, onHome, onBack }) {
                 </div>
 
                 {/* CONTENT */}
-                <div className="mt-[32px] flex flex-col gap-[14px] md:mt-[60px] md:flex-row md:gap-[14px] xl:mt-[80px]">
+                <div className="mt-[32px] flex flex-col gap-[14px] md:mt-[34px] md:mb-[44px] md:flex-row md:gap-[14px] lg:mt-[60px] lg:mb-0 xl:mt-[80px]">
+                
 
                     {/* LEFT COLUMN */}
                     <div className="flex w-full shrink-0 flex-col gap-[12px] md:w-[56px] md:min-w-[56px] xl:w-[208px] xl:min-w-[208px]">
@@ -149,7 +149,7 @@ export default function SummaryScreen({ analysisData, onHome, onBack }) {
                     </div>
 
                     {/* CENTER PANEL */}
-                    <div className="relative hidden min-h-[520px] flex-1 overflow-hidden border border-[#D0D0D0] bg-[#EFEFEF] md:block xl:min-h-[544px]">
+                    <div className="relative hidden min-h-[420px] flex-1 overflow-hidden border border-[#D0D0D0] bg-[#EFEFEF] md:block lg:min-h-[520px] xl:min-h-[544px]">
 
 
                         <div className="h-[1px] w-full bg-[#1A1B1C]/30" />
@@ -158,7 +158,7 @@ export default function SummaryScreen({ analysisData, onHome, onBack }) {
                             {activeData.options[selectedOption][0]}
                         </p>
 
-                        <div className="absolute left-1/2 top-[65%] h-[410px] w-[410px] -translate-x-1/2 -translate-y-1/2 xl:left-auto xl:right-[40px] xl:top-1/2 xl:h-[384px] xl:w-[384px] xl:translate-x-0">
+                        <div className="absolute left-1/2 top-[56%] h-[410px] w-[410px] -translate-x-1/2 -translate-y-1/2 xl:left-auto xl:right-[40px] xl:top-1/2 xl:h-[384px] xl:w-[384px] xl:translate-x-0">
 
 
                             <svg
@@ -201,7 +201,7 @@ export default function SummaryScreen({ analysisData, onHome, onBack }) {
                     </div>
 
                     {/* RIGHT PANEL */}
-                    <div className="relative w-full bg-[#FEFEFE] md:min-h-[660px] md:w-[165px] md:shrink-0 md:border md:border-[#D0D0D0] md:bg-[#EFEFEF] xl:min-h-[544px] xl:w-[448px]">
+                    <div className="relative w-full bg-[#FEFEFE] md:min-h-[490px] md:w-[165px] md:shrink-0 md:border md:border-[#D0D0D0] md:bg-[#EFEFEF] lg:min-h-[520px] xl:min-h-[544px] xl:w-[448px]">
 
 
 
@@ -339,24 +339,24 @@ export default function SummaryScreen({ analysisData, onHome, onBack }) {
                     If A.I. estimate is wrong, select the correct one.
                 </p>
                 {/* NAV */}
-                <div className="fixed bottom-[72px] left-0 right-0 z-50 flex items-end justify-between px-[52px] md:static md:mt-[44px] md:px-[28px] lg:fixed lg:bottom-[38px] lg:px-[42px] xl:bottom-[34px] xl:px-[52px]">
-                    <div className="mt-[48px]">
-                        <BackButton onClick={onBack} />
-                    </div>
+                <div className="fixed bottom-[72px] left-0 right-0 z-50 flex justify-between px-[52px] md:static md:mt-[12px] md:px-[28px] lg:fixed lg:bottom-[38px] lg:mt-0 lg:px-[42px] xl:bottom-[34px] xl:px-[52px]">
+  <div>
+    <BackButton onClick={onBack} />
+  </div>
 
-                    <button
-                        onClick={onHome}
-                        className="mt-[72px] flex items-center gap-[12px]"
-                    >
-                        <span className="text-[14px] font-semibold uppercase leading-[16px] tracking-[0em] text-[#1A1B1C]">
-                            Home
-                        </span>
+  <button
+    onClick={onHome}
+    className="flex items-center gap-[12px]"
+  >
+    <span className="text-[14px] font-semibold uppercase leading-[16px] tracking-[0em] text-[#1A1B1C]">
+      Home
+    </span>
 
-                        <div className="flex h-[44px] w-[44px] rotate-45 items-center justify-center border border-[#1A1B1C] bg-[#F3F3F0]">
-                            <MdPlayArrow className="h-[24px] w-[24px] -rotate-45 text-[#1A1B1C]" />
-                        </div>
-                    </button>
-                </div>
+    <div className="flex h-[44px] w-[44px] rotate-45 items-center justify-center border border-[#1A1B1C] bg-[#F3F3F0]">
+      <MdPlayArrow className="h-[24px] w-[24px] -rotate-45 text-[#1A1B1C]" />
+    </div>
+  </button>
+</div>
             </div>
 
         </main>

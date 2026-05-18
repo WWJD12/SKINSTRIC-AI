@@ -110,12 +110,11 @@ export default function PermissionScreen({ onAllow, onBack, onGallerySelect }) {
         </ScreenLabel>
       </div>
 
-      <section className="absolute left-1/2 top-1/2 z-10 flex w-full max-w-[calc(100vw-48px)] -translate-x-1/2 -translate-y-[46%] flex-col items-center gap-[28px] md:max-w-[860px] md:flex-row md:justify-center md:gap-[108px]">
-        <CameraChoice onClick={() => setShowPermission(true)} />
+<section className="absolute left-1/2 top-1/2 z-10 flex w-full max-w-[calc(100vw-48px)] -translate-x-1/2 -translate-y-[46%] flex-col items-center gap-[28px] md:max-w-[860px] md:flex-row md:justify-center md:gap-[108px] lg:gap-[250px]">        <CameraChoice onClick={() => setShowPermission(true)} />
         <GalleryChoice onChange={onGallerySelect} />
       </section>
 
-      <div className="fixed right-[28px] top-[76px] z-[9999] md:right-[56px] md:top-[150px]">
+      <div className="fixed right-[28px] top-[76px] z-[9999] md:right-[56px] md:top-[64px] lg:top-[150px]">
         <p className="mb-2 font-['Roobert_TRIAL'] text-[14px] text-black/70">
           Preview
         </p>
